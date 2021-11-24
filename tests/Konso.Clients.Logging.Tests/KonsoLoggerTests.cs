@@ -4,7 +4,6 @@ using Konso.Clients.Logging.Models;
 using Konso.Clients.Logging.Models.Requests;
 using System;
 using System.Collections.Generic;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -12,7 +11,7 @@ namespace Konso.Clients.Logging.Tests
 {
     public class KonsoLoggerTests 
     {
-        private const string apiUrl = "https://devapis.konso.io/v1/logs";
+        private const string apiUrl = "https://apis.konso.io";
         private const string bucketId = "<your bucket id>";
         private const string apiKey = "<your access key>";
         private const string app = "TestApp";
@@ -45,7 +44,7 @@ namespace Konso.Clients.Logging.Tests
         }
 
         [Fact]
-        public async Task CreateAndGet_SimpleMetric()
+        public async Task CreateAndGet_SimpleLog()
         {
             // arrange
             var service = new KonsoLoggingClient(new KonsoLoggerConfig()

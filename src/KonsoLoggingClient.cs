@@ -36,7 +36,7 @@ namespace Konso.Clients.Logging
                 }
 
                 var httpItem = new StringContent(jsonStr, Encoding.UTF8, "application/json");
-                var response = await _client.PostAsync($"{_config.Endpoint}/{_config.BucketId}", httpItem);
+                var response = await _client.PostAsync($"{_config.Endpoint}/v1/logs/{_config.BucketId}", httpItem);
                 if (!response.IsSuccessStatusCode)
                     throw new Exception(string.Format("Error sending log status code {0}", response.StatusCode));
 
@@ -67,7 +67,7 @@ namespace Konso.Clients.Logging
                 }
                     
                 int sortNum = (int)request.Sort;
-                var builder = new UriBuilder($"{_config.Endpoint}/{_config.BucketId}")
+                var builder = new UriBuilder($"{_config.Endpoint}/v1/logs/{_config.BucketId}")
                 {
                     Port = -1
                 };

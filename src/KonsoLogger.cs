@@ -37,6 +37,7 @@ namespace Konso.Clients.Logging
 
         public async void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
+            string correlationId = null;
             if (!IsEnabled(logLevel))
             {
                 return;
@@ -44,7 +45,10 @@ namespace Konso.Clients.Logging
 
             StringBuilder sb = new StringBuilder($"{_name} {logLevel.ToString()} - {eventId.Id}  - {formatter(state, exception)}");
 
-            var correlationId = _accessor.HttpContext.TraceIdentifier;
+            if (_accessor != null && _accessor.HttpContext != null)
+            {
+                correlationId = _accessor.HttpContext.TraceIdentifier;
+            }
 
             if (exception != null && !string.IsNullOrEmpty(exception.StackTrace))
             {

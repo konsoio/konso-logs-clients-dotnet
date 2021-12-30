@@ -1,4 +1,5 @@
-
+![Nuget](https://img.shields.io/nuget/v/Konso.Clients.Logging) 
+![example workflow](https://github.com/konsoio/konso-logs-clients-dotnet/actions/workflows/dotnet.yml/badge.svg)
 
 # Konso Logging .Net Client
 
@@ -47,5 +48,7 @@ Define config:
     _logsConfig.ApiKey = hostContext.Configuration.GetValue<string>("Konso:Logging:ApiKey");
 
     services.AddSingleton(_logsConfig);
+
+    services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 })
 ```

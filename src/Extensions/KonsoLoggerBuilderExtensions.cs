@@ -9,6 +9,8 @@ namespace Konso.Clients.Logging.Extensions
     {
         public static ILoggingBuilder AddKonsoLogger(this ILoggingBuilder builder)
         {
+
+
             builder.Services.AddSingleton<ILoggingClient, KonsoLoggingClient>();
             builder.Services.AddSingleton<ILoggerProvider, KonsoLoggerProvider>();
             return builder;

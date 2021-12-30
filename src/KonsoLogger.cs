@@ -1,6 +1,7 @@
 ﻿using Konso.Clients.Logging.Extensions;
 using Konso.Clients.Logging.Models;
 using Konso.Clients.Logging.Models.Requests;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
@@ -13,13 +14,15 @@ namespace Konso.Clients.Logging
         private readonly string _name;
         private readonly KonsoLoggerConfig _loggerConfig;
         private readonly ILoggingClient _client;
+        private readonly IHttpContextAccessor _accessor;
 
-        public KonsoLogger(string name, KonsoLoggerConfig _config, ILoggingClient client)
+        public KonsoLogger(string name, KonsoLoggerConfig _config, ILoggingClient client, IHttpContextAccessor accessor)
         {
 
             _name = name;
             _loggerConfig = _config;
             _client = client;
+            _accessor = accessor;
         }
 
         public IDisposable BeginScope<TState>(TState state)
@@ -40,18 +43,8 @@ namespace Konso.Clients.Logging
             }
 
             StringBuilder sb = new StringBuilder($"{_name} {logLevel.ToString()} - {eventId.Id}  - {formatter(state, exception)}");
-            var correlationIdPart = state.
-                ToString().
-                Split(',').
-                Where(x => x.ToLower().Contains("correlationid")).
-                FirstOrDefault();
 
-            var correlationId = string.IsNullOrWhiteSpace(correlationIdPart) ?
-                null :
-                correlationIdPart.
-                    Split(' ').
-                    Where(x => !x.ToLower().Contains("correlationid")).
-                    FirstOrDefault();
+            var correlationId = _accessor.HttpContext.TraceIdentifier;
 
             if (exception != null && !string.IsNullOrEmpty(exception.StackTrace))
             {

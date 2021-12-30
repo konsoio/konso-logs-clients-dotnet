@@ -42,7 +42,7 @@ namespace Konso.Clients.Logging
 
                 return true;
             }
-            catch (Exception ex)
+            catch
             {
                 return false;
             }
@@ -116,7 +116,7 @@ namespace Konso.Clients.Logging
                 var responseObj = JsonSerializer.Deserialize<PagedResponse<LogEntryDto>>(responseBody, options);
                 return responseObj;
             }
-            catch (Exception ex)
+            catch
             {
                 throw;
             }

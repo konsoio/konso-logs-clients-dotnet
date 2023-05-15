@@ -53,7 +53,7 @@ namespace Konso.Clients.Logging
             // nothing to dispose
         }
 
-        public async Task<PagedResponse<LogEntryDto>> GetByAsync(GetLogsRequest request)
+        public async Task<KonsoPagedResponse<LogEntryDto>> GetByAsync(GetLogsRequest request)
         {
             try
             {
@@ -113,7 +113,7 @@ namespace Konso.Clients.Logging
                     PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
                 };
 
-                var responseObj = JsonSerializer.Deserialize<PagedResponse<LogEntryDto>>(responseBody, options);
+                var responseObj = JsonSerializer.Deserialize<KonsoPagedResponse<LogEntryDto>>(responseBody, options);
                 return responseObj;
             }
             catch

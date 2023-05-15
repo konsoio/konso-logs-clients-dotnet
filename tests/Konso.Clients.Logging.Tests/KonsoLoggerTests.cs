@@ -12,8 +12,8 @@ namespace Konso.Clients.Logging.Tests
     public class KonsoLoggerTests 
     {
         private const string apiUrl = "https://apis.konso.io";
-        private const string bucketId = "<your bucket id>";
-        private const string apiKey = "<your access key>";
+        private const string bucketId = "69bc5aa5";
+        private const string apiKey = "VEyk9AfYlr4AFqJHwNQ0E7RR5+D1SnuujjofRGfee4w=";
         private const string app = "TestApp";
        
 

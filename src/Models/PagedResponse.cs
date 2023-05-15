@@ -2,7 +2,7 @@
 
 namespace Konso.Clients.Logging.Models
 {
-    public class PagedResponse<T>
+    public class KonsoPagedResponse<T>
     {
         /// <summary>
         /// List of entities

@@ -8,6 +8,6 @@ namespace Konso.Clients.Logging.Models
     {
         Task<bool> CreateAsync(CreateLogRequest request);
 
-        Task<PagedResponse<LogEntryDto>> GetByAsync(GetLogsRequest request);
+        Task<KonsoPagedResponse<LogEntryDto>> GetByAsync(GetLogsRequest request);
     }
 }

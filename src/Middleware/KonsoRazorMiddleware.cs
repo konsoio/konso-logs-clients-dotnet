@@ -1,25 +1,25 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Primitives;
+using System.Threading.Tasks;
 
 namespace Konso.Clients.Logging.Middleware
 {
-    public class KonsoLoggingApiMiddleware
+    public class KonsoRazorMiddleware
     {
         private readonly RequestDelegate _next;
         private const string HeaderName = "X-Correlation-ID";
 
-        public KonsoLoggingApiMiddleware(RequestDelegate next)
+        public KonsoRazorMiddleware(RequestDelegate next)
         {
             _next = next;
 
         }
         public async Task InvokeAsync(HttpContext context)
         {
-            // get correlation id from header 
-            if (context.Request.Headers.TryGetValue(HeaderName, out StringValues correlationId))
+            // get correlation id session
+            if (!string.IsNullOrEmpty(context.Session.Id))
             {
-                context.TraceIdentifier = correlationId;
+                context.TraceIdentifier = context.Session.Id;
             }
             await _next(context);
         }

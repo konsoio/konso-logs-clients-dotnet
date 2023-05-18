@@ -46,15 +46,15 @@ in `startup.cs`:
 
 ```csharp
 
-.ConfigureLogging(logging => {
-    logging.ClearProviders();
-    logging.AddKonsoLogger(options => {
-        options.Endpoint = hostContext.Configuration.GetValue<string>("Konso:Logging:Endpoint");
-        options.BucketId = hostContext.Configuration.GetValue<string>("Konso:Logging:BucketId");
-        options.AppName = hostContext.Configuration.GetValue<string>("Konso:Logging:App");
-        options.ApiKey = hostContext.Configuration.GetValue<string>("Konso:Logging:ApiKey");
-    });
-})
+builder.Logging.AddKonsoLogger(options =>
+{
+    options.Endpoint = builder.Configuration["Konso:Logging:Endpoint"];
+    options.BucketId = builder.Configuration["Konso:Logging:BucketId"];
+    options.AppName = builder.Configuration["Konso:Logging:App"];
+    options.ApiKey = builder.Configuration["Konso:Logging:ApiKey"];
+    options.LogLevel = (LogLevel)Enum.Parse(typeof(LogLevel), builder.Configuration["Konso:Logging:Level"].ToString());
+
+});
 
 ```
 
@@ -77,6 +77,7 @@ public SomeController(ILogger<SomeController> logger)
 {
     logger.Info("Welcome to TestApp");
 }
+
 ```
 
 ## Requirements

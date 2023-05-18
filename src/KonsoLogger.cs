@@ -3,6 +3,7 @@ using Konso.Clients.Logging.Models;
 using Konso.Clients.Logging.Models.Requests;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.Linq;
 using System.Text;
@@ -12,15 +13,15 @@ namespace Konso.Clients.Logging
     public class KonsoLogger : ILogger
     {
         private readonly string _name;
-        private readonly KonsoLoggerConfig _loggerConfig;
+        private readonly KonsoLoggerConfig _config;
         private readonly ILoggingClient _client;
         private readonly IHttpContextAccessor _accessor;
 
-        public KonsoLogger(string name, KonsoLoggerConfig _config, ILoggingClient client, IHttpContextAccessor accessor)
+        public KonsoLogger(string name, IOptions<KonsoLoggerConfig> config, ILoggingClient client, IHttpContextAccessor accessor)
         {
 
             _name = name;
-            _loggerConfig = _config;
+            _config = config.Value;
             _client = client;
             _accessor = accessor;
         }
@@ -32,7 +33,7 @@ namespace Konso.Clients.Logging
 
         public bool IsEnabled(LogLevel logLevel)
         {
-            return logLevel >= _loggerConfig.LogLevel;
+            return logLevel >= _config.LogLevel;
         }
 
         public async void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
@@ -59,7 +60,7 @@ namespace Konso.Clients.Logging
             var request = new CreateLogRequest()
             {
                 MachineName = Environment.MachineName,
-                AppName = _loggerConfig.AppName,
+                AppName = _config.AppName,
                 Message = sb.ToString(),
                 Env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"),
                 TimeStamp = DateTime.UtcNow.ToEpoch(),

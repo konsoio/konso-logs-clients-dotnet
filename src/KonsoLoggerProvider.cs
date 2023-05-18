@@ -1,6 +1,7 @@
 ﻿using Konso.Clients.Logging.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System.Collections.Concurrent;
 
 namespace Konso.Clients.Logging
@@ -9,9 +10,9 @@ namespace Konso.Clients.Logging
     {
         private readonly ConcurrentDictionary<string, KonsoLogger> _loggers = new();
         private readonly ILoggingClient _client;
-        private KonsoLoggerConfig _currentConfig;
+        private IOptions<KonsoLoggerConfig> _currentConfig;
         private readonly IHttpContextAccessor _accessor;
-        public KonsoLoggerProvider(KonsoLoggerConfig konsoLogger, ILoggingClient client, IHttpContextAccessor accessor)
+        public KonsoLoggerProvider(IOptions<KonsoLoggerConfig> konsoLogger, ILoggingClient client, IHttpContextAccessor accessor)
         {
             _currentConfig = konsoLogger;
             _client = client;
@@ -21,7 +22,7 @@ namespace Konso.Clients.Logging
         public ILogger CreateLogger(string categoryName) =>
             _loggers.GetOrAdd(categoryName, name => new KonsoLogger(name, GetCurrentConfig(), _client, _accessor));
 
-        private KonsoLoggerConfig GetCurrentConfig() => _currentConfig;
+        private IOptions<KonsoLoggerConfig> GetCurrentConfig() => _currentConfig;
 
         public void Dispose()
         {

@@ -1,6 +1,7 @@
 ﻿using Konso.Clients.Logging.Models;
 using Konso.Clients.Logging.Models.Dtos;
 using Konso.Clients.Logging.Models.Requests;
+using Microsoft.Extensions.Options;
 using System;
 using System.Net.Http;
 using System.Text;
@@ -14,10 +15,10 @@ namespace Konso.Clients.Logging
     {
         private readonly HttpClient _client;
         private readonly KonsoLoggerConfig _config;
-        public KonsoLoggingClient(KonsoLoggerConfig config)
+        public KonsoLoggingClient(IOptions<KonsoLoggerConfig> config)
         { 
             _client = new HttpClient();
-            _config = config;
+            _config = config.Value;
         }
         public async Task<bool> CreateAsync(CreateLogRequest request)
         {

@@ -10,12 +10,18 @@ namespace Konso.Clients.Logging.Models.Requests
         public long TimeStamp { get; set; }
         public List<string> Tags { get; set; }
         public string AppName { get; set; }
-        public string CorrelationId { get; set; }
+        public string? CorrelationId { get; set; }
         public string MachineName { get; set; }
         public string Message { get; set; }
         public string Env { get; set; }
         public int? EventId { get; set; }
         public string Level { get; set; }
+
+        public string? AppVersion { get; set; }
+
+        public byte? Runtime { get; set; }
+
+        public string? RuntimeVersion { get; set; }
 
     }
 }

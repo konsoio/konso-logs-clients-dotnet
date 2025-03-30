@@ -38,6 +38,9 @@ namespace Konso.Clients.Logging
 
         public async void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
+            System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            System.Diagnostics.FileVersionInfo fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
+
             string correlationId = null;
             if (!IsEnabled(logLevel))
             {
@@ -56,7 +59,7 @@ namespace Konso.Clients.Logging
                 sb.Append($", error: {exception.Message}, trace: {exception.StackTrace}");
             }
 
-          
+
             var request = new CreateLogRequest()
             {
                 MachineName = Environment.MachineName,
@@ -66,7 +69,10 @@ namespace Konso.Clients.Logging
                 TimeStamp = DateTime.UtcNow.ToEpoch(),
                 EventId = eventId.Id > 0 ? eventId.Id : new int?(),
                 CorrelationId = correlationId,
-                Level = logLevel.ToString()
+                Level = logLevel.ToString(),
+                Runtime = 1, // dotnet,
+                RuntimeVersion = Environment.Version.ToString(),
+                AppVersion = fvi.FileVersion.ToString()
             };
 
 

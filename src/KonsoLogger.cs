@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace Konso.Clients.Logging
@@ -38,8 +39,7 @@ namespace Konso.Clients.Logging
 
         public async void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
-            System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
-            System.Diagnostics.FileVersionInfo fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
+            var version = VersionInfoHelper.AppVersion();
 
             string correlationId = null;
             if (!IsEnabled(logLevel))
@@ -72,7 +72,7 @@ namespace Konso.Clients.Logging
                 Level = logLevel.ToString(),
                 Runtime = 1, // dotnet,
                 RuntimeVersion = Environment.Version.ToString(),
-                AppVersion = fvi.FileVersion.ToString()
+                AppVersion = version
             };
 
 
